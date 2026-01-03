@@ -32,4 +32,6 @@ jobs:
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project algentech-6a5be
+        run: |
+          cd app
+          firebase deploy --only hosting --project algentech-6a5be
