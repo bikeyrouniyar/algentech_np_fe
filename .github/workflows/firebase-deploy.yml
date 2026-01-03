@@ -11,27 +11,32 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - run: npm install
-      - run: npm run build
+      # Build React inside /app (because your firebase.json is there)
+      - name: Install & Build
+        run: |
+          cd app
+          npm install
+          npm run build
 
-      # Authenticate to Google using WIF (NO JSON KEYS)
-      - uses: google-github-actions/auth@v1
+      # Secure keyless Google login (OIDC)
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: "projects/937360179428/locations/global/workloadIdentityPools/github-pool/providers/github"
           service_account: "github-deployer@algentech-6a5be.iam.gserviceaccount.com"
 
-      # Use Firebase CLI directly (modern way)
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
+      # Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         run: |
           cd app
-          firebase deploy --only hosting --project algentech-6a5be
+          npx firebase-tools deploy --only hosting --project algentech-6a5be
