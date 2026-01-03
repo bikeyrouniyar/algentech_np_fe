@@ -29,4 +29,6 @@ jobs:
           service_account: "github-deployer@algentech-6a5be.iam.gserviceaccount.com"
 
       - name: Deploy to Firebase
-        run: npx firebase-tools deploy --only hosting --project algentech-6a5be
+        run: |
+          cd app
+          npx firebase-tools deploy --only hosting --project algentech-6a5be
