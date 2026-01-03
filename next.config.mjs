@@ -11,4 +11,8 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+export default {
+  output: 'export'
+}
+
+// export default nextConfig

@@ -11,32 +11,22 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Build React inside /app (because your firebase.json is there)
-      - name: Install & Build
+      - name: Build Next App
         run: |
-          cd app
           npm install
           npm run build
 
-      # Secure keyless Google login (OIDC)
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to Google
         uses: google-github-actions/auth@v1
         with:
           workload_identity_provider: "projects/937360179428/locations/global/workloadIdentityPools/github-pool/providers/github"
           service_account: "github-deployer@algentech-6a5be.iam.gserviceaccount.com"
 
-      # Deploy to Firebase Hosting
-      - name: Deploy to Firebase Hosting
-        run: |
-          cd app
-          npx firebase-tools deploy --only hosting --project algentech-6a5be
+      - name: Deploy to Firebase
+        run: npx firebase-tools deploy --only hosting --project algentech-6a5be
