@@ -21,6 +21,12 @@ jobs:
         run: |
           npm install
           npm run build
+          echo "==== ROOT ===="
+          ls -la
+          echo "==== APP FOLDER ===="
+          ls -la app || true
+          echo "==== ANY OUT FOLDERS ===="
+          find . -type d -name out
 
       - name: Authenticate to Google
         uses: google-github-actions/auth@v1
