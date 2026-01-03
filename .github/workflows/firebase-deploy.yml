@@ -1,0 +1,33 @@
+name: Firebase Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm install
+      - run: npm run build
+
+      - id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: "projects/937360179428/locations/global/workloadIdentityPools/github-pool/providers/github"
+          service_account: "github-deployer@algentech-6a5be.iam.gserviceaccount.com"
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          projectId: algentech-6a5be
+          channelId: live
+
