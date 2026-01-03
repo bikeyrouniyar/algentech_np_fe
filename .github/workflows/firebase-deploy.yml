@@ -21,6 +21,7 @@ jobs:
         run: |
           npm install
           npm run build
+          npx next export
 
       - name: Authenticate to Google
         uses: google-github-actions/auth@v1
