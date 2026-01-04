@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static export for Firebase Hosting (outputs to `out/`)
+  output: "export",
+
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -7,12 +10,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    // Required for static export
     unoptimized: true,
   },
 }
 
-export default {
-  output: 'export'
-}
-
-// export default nextConfig
+export default nextConfig
